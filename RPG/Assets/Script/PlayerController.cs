@@ -9,9 +9,19 @@ public class PlayerController : MonoBehaviour
     [Header("Stat")]
     [SerializeField]
     float moveSpeed;
+    public int currentHealth;
+    public int maxHealth;
+
+    public static PlayerController instance;
+
+    private void Awake()
+    {
+        instance = this;
+    }
 
     void Start()
     {
+        currentHealth = maxHealth;
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         

@@ -19,7 +19,7 @@ AnimatorStateTransition:
     m_EventTreshold: -0.1
   - m_ConditionMode: 4
     m_ConditionEvent: inputY
-    m_EventTreshold: 0
+    m_EventTreshold: 0.1
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 6413439422644523163}
   m_Solo: 0
@@ -95,10 +95,10 @@ AnimatorStateMachine:
   m_ChildStates:
   - serializedVersion: 1
     m_State: {fileID: 6413439422644523163}
-    m_Position: {x: 342.05023, y: 68.14191, z: 0}
+    m_Position: {x: 340, y: 70, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 6000722525101183288}
-    m_Position: {x: 370.78552, y: 299.9399, z: 0}
+    m_Position: {x: 370, y: 300, z: 0}
   m_ChildStateMachines: []
   m_AnyStateTransitions: []
   m_EntryTransitions: []
