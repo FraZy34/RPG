@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -14,6 +15,10 @@ public class PlayerController : MonoBehaviour
     [Header("Attack")]
     private float attackTime;
     [SerializeField] float timeBetweenAttack;
+    private bool canMove = true;
+    [SerializeField] Transform checkEnemy;
+    public LayerMask whatIsEnemy;
+    public float range;
 
     public static PlayerController instance;
 
@@ -27,7 +32,7 @@ public class PlayerController : MonoBehaviour
         currentHealth = maxHealth;
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
-        
+
     }
 
     void Update()
@@ -41,8 +46,17 @@ public class PlayerController : MonoBehaviour
         {
             if (Time.time >= attackTime)
             {
+                rb.linearVelocity = Vector2.zero;
                 anim.SetTrigger("attack");
 
+                StartCoroutine(Delay());
+
+                IEnumerator Delay()
+                {
+                    canMove = false;
+                    yield return new WaitForSeconds(.5f);
+                    canMove = true;
+                }
                 attackTime = Time.time + timeBetweenAttack;
             }
         }
@@ -50,7 +64,11 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        Move();
+        if (canMove)
+        {
+            Move();
+        }
+           
     }
 
     void Move()
@@ -60,6 +78,28 @@ public class PlayerController : MonoBehaviour
             anim.SetFloat("lastInputX", Input.GetAxis("Horizontal"));
             anim.SetFloat("lastInputY", Input.GetAxis("Vertical"));
         }
+
+        if (Input.GetAxis("Horizontal") > 0.1)
+        {
+            checkEnemy.position = new Vector3(transform.position.x + range, transform.position.y, 0);
+        }
+        else if (Input.GetAxis("Horizontal") < -0.1)  // aussi corriger le signe ici
+        {
+            checkEnemy.position = new Vector3(transform.position.x - range, transform.position.y, 0);
+        }
+
+        if (Input.GetAxis("Vertical") > 0.1)
+        {
+            checkEnemy.position = new Vector3(transform.position.x, transform.position.y + range, 0);
+        }
+        else if (Input.GetAxis("Vertical") < -0.1)  // corriger le signe
+        {
+            checkEnemy.position = new Vector3(transform.position.x, transform.position.y - range, 0);
+        }
+
+
+
+
 
         float x = Input.GetAxis("Horizontal"); 
         float y = Input.GetAxis("Vertical");
@@ -74,5 +114,16 @@ public class PlayerController : MonoBehaviour
             anim.SetFloat("inputY", y);
         }
        
+    }
+
+    public void OnAttack()
+    {
+        Collider2D[] enemy = Physics2D.OverlapCircleAll(checkEnemy.position, 0.5f, whatIsEnemy);
+
+        foreach (var  enemy_ in enemy)
+        {
+
+        }
+
     }
 }
