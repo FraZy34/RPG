@@ -7,10 +7,13 @@ public class PlayerController : MonoBehaviour
     Animator anim;
 
     [Header("Stat")]
-    [SerializeField]
-    float moveSpeed;
+    [SerializeField] float moveSpeed;
     public int currentHealth;
     public int maxHealth;
+
+    [Header("Attack")]
+    private float attackTime;
+    [SerializeField] float timeBetweenAttack;
 
     public static PlayerController instance;
 
@@ -29,7 +32,20 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+        Attack();
+    }
 
+    private void Attack()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            if (Time.time >= attackTime)
+            {
+                anim.SetTrigger("attack");
+
+                attackTime = Time.time + timeBetweenAttack;
+            }
+        }
     }
 
     private void FixedUpdate()

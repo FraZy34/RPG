@@ -3,21 +3,18 @@ using UnityEngine.UI;
 
 public class Health : MonoBehaviour
 {
+    [Header("Sprites de vie")]
+    [SerializeField] private Sprite emptyPoint;
+    [SerializeField] private Sprite fullPoint;
 
-    public Sprite emptyPoint, fullPoint;
-    public Image life1, life2, life3;
+    [Header("UI - Images de vie")]
+    [SerializeField] private Image life1;
+    [SerializeField] private Image life2;
+    [SerializeField] private Image life3;
 
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
     void Update()
     {
-        switch(PlayerController.instance.currentHealth)
+        switch (PlayerController.instance.currentHealth)
         {
             case 0:
                 life1.sprite = emptyPoint;
@@ -39,7 +36,7 @@ public class Health : MonoBehaviour
                 life2.sprite = fullPoint;
                 life3.sprite = fullPoint;
                 break;
-
         }
     }
 }
+
