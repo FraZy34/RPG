@@ -9,16 +9,20 @@ public class Enemy : MonoBehaviour
     private float playerDetectTime;
     public float playerDectectRate;
     public float chaseRange;
+    bool lookRight;
 
     [Header("Attack")]
     [SerializeField] float attackRange;
     [SerializeField] int damage;
     [SerializeField] float attackRate;
     private float lastAttackTime;
+    public Transform attackPoint;
+    public LayerMask playerLayerMask;
 
     [Header("Component")]
     Rigidbody2D rb;
     private PlayerController targetPlayer;
+    Animator anim;
 
     [Header("Pathfinding")]
     public float nextWaypointDistance = 3f;
@@ -32,6 +36,7 @@ public class Enemy : MonoBehaviour
     {
         seeker = GetComponent<Seeker>();
         rb = GetComponent<Rigidbody2D>();
+        anim = GetComponent<Animator>();
 
         InvokeRepeating("UpdatePath", 0f, .5f);
     }
@@ -53,6 +58,14 @@ public class Enemy : MonoBehaviour
         }
     }
 
+    private void Update()
+    {
+        if (rb.linearVelocity.x > 0 && lookRight || rb.linearVelocity.x < 0 && !lookRight)
+        {
+            Flip();
+        }
+    }
+
     private void FixedUpdate()
     {
 
@@ -62,8 +75,10 @@ public class Enemy : MonoBehaviour
 
             if (dist < attackRange && Time.time - lastAttackTime >= attackRate)
             {
-                //attack
+                lastAttackTime = Time.time;
+                anim.SetTrigger("attack");
                 rb.linearVelocity = Vector2.zero;
+
             }
             else if (dist > attackRange)
             {
@@ -122,14 +137,35 @@ public class Enemy : MonoBehaviour
                         if (dist > chaseRange)
                         {
                             targetPlayer = null;
+                            rb.linearVelocity = Vector2.zero;
+                            anim.SetBool("onMove", false);
                         }
                     }else if (dist < chaseRange)
                     {
                         if (targetPlayer == null)
                             targetPlayer = player;
+                        anim.SetBool("onMove", true);
                     }
                 }
             }
+        }
+    }
+
+    void Flip()
+    {
+        lookRight = !lookRight;
+
+        transform.Rotate(0, 180f,  0);
+    }
+
+    void Attack()
+    {
+        Collider2D player = Physics2D.OverlapCircle(attackPoint.transform.position, 0.5f, playerLayerMask);
+
+        if (player != null && player.tag == "Player")
+        {
+            player.GetComponent<PlayerController>().TakeDamage(damage);
+
         }
     }
 }

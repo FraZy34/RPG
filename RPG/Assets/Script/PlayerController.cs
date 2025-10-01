@@ -126,4 +126,9 @@ public class PlayerController : MonoBehaviour
         }
 
     }
+
+    public void TakeDamage(int damage)
+    {
+        currentHealth -= damage;
+    }
 }
