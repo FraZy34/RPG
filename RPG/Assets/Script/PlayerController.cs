@@ -19,6 +19,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] Transform checkEnemy;
     public LayerMask whatIsEnemy;
     public float range;
+    public int damage = 1;
 
     public static PlayerController instance;
 
@@ -120,15 +121,15 @@ public class PlayerController : MonoBehaviour
     {
         Collider2D[] enemy = Physics2D.OverlapCircleAll(checkEnemy.position, 0.5f, whatIsEnemy);
 
-        foreach (var  enemy_ in enemy)
+        foreach (var enemy_ in enemy)
         {
-
+            enemy_.GetComponent<Enemy>().TakeDamage(damage);
         }
-
     }
 
     public void TakeDamage(int damage)
     {
         currentHealth -= damage;
+        Debug.Log("Aie");
     }
 }

@@ -1,19 +1,19 @@
+using System.Collections;
 using UnityEngine;
 using Pathfinding;
 
-public class Enemy : MonoBehaviour
+public class Enemy : EnemyStats
 {
 
     [Header("Stats")]
     [SerializeField] float speed;
     private float playerDetectTime;
-    public float playerDectectRate;
+    public float playerDectectRate = 0.2f;
     public float chaseRange;
     bool lookRight;
 
     [Header("Attack")]
     [SerializeField] float attackRange;
-    [SerializeField] int damage;
     [SerializeField] float attackRate;
     private float lastAttackTime;
     public Transform attackPoint;
@@ -37,7 +37,7 @@ public class Enemy : MonoBehaviour
         seeker = GetComponent<Seeker>();
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
-
+        InitializeBar();
         InvokeRepeating("UpdatePath", 0f, .5f);
     }
 
@@ -75,9 +75,20 @@ public class Enemy : MonoBehaviour
 
             if (dist < attackRange && Time.time - lastAttackTime >= attackRate)
             {
+                StartCoroutine(Delay());
+
+                IEnumerator Delay()
+                {
+                    yield return new WaitForSeconds(Random.Range(0.1f, 1f));
+                    if (dist < attackRange)
+                    {
+                        anim.SetTrigger("attack");
+                        rb.linearVelocity = Vector2.zero;
+                    }
+                }
                 lastAttackTime = Time.time;
-                anim.SetTrigger("attack");
-                rb.linearVelocity = Vector2.zero;
+               
+               
 
             }
             else if (dist > attackRange)
@@ -167,5 +178,11 @@ public class Enemy : MonoBehaviour
             player.GetComponent<PlayerController>().TakeDamage(damage);
 
         }
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawSphere(attackPoint.position, 0.5f);
     }
 }
