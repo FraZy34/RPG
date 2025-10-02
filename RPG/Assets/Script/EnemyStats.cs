@@ -47,6 +47,7 @@ public class EnemyStats : MonoBehaviour
         anim = GetComponent<Animator>();
         InvokeRepeating("UpdatePath", 0f, .5f);
         myMethode = _myMethode;
+        healthBar.SetActive(false);
     }
 
     private void Update()
