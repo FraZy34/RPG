@@ -1,16 +1,25 @@
 using UnityEngine;
 
-public class QuestSO : MonoBehaviour
+[CreateAssetMenu (fileName = "Quest", menuName = "ScriptableObject/Quest", order = 0)]
+
+public class QuestSO : ScriptableObject
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public int id;
+    public string title;
+    public string description;
+    public string[] sentences, InProgressSentence, completeSentence, afterQuestSentence;
+    public string objectTofind;
+    public int actualAmount, amountToFind;
+    public int goldToGive;
+
+    [System.Serializable]
+
+    public enum Statut
     {
-        
+        none,
+        accepter,
+        complete
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    public Statut statut;
 }

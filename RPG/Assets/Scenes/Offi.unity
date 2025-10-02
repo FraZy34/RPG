@@ -349,6 +349,7 @@ MonoBehaviour:
   - Moi c'est Florian.
   - "Les gars faut arr\xEAter les fast-food."
   characterName: Florian
+  quest: {fileID: 11400000, guid: 96c565bec442c664895931f3b4fe2854, type: 2}
 --- !u!58 &213228980
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -4193,6 +4194,7 @@ MonoBehaviour:
   - Moi c'est Thomas.
   - "Tu pourrais m'aider Alyssa n'arr\xEAte pas de me mettre des remis."
   characterName: Thomas
+  quest: {fileID: 0}
 --- !u!58 &1323532296
 CircleCollider2D:
   m_ObjectHideFlags: 0

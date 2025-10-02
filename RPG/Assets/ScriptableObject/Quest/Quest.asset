@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: faf89edbe705f8f41a362dfdeda32740, type: 3}
+  m_Name: Quest
+  m_EditorClassIdentifier: 
+  id: 0
+  title: J'ai Faim !!!
+  description: J'ai trop Faim, peut tu me rapporter un beignet au pomme.
+  sentences:
+  - J'ai trop Faim, peut tu me rapporter un beignet au pomme ?
+  InProgressSentence:
+  - "J'ai Faim !!! D\xE9p\xEAche toi !!!"
+  completeSentence:
+  - "Merci ! Je vais me r\xE9galer !!!"
+  afterQuestSentence:
+  - Les beignets aux pommes c'est vraiment les meilleurs.
+  objectTofind: 
+  actualAmount: 2
+  amountToFind: 2
+  goldToGive: 50
+  statut: 2

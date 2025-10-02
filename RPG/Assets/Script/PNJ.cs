@@ -12,50 +12,74 @@ public class PNJ : MonoBehaviour
 
     HUDManager manager => HUDManager.instance;
 
+    public QuestSO quest; 
+
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.E) && isOnDial)
         {
-            StartDialogue();
-            manager.continueButton.GetComponent<Button>().onClick.RemoveAllListeners();
-            manager.continueButton.GetComponent<Button>().onClick.AddListener(delegate { NextLine();  });
+            if (quest !=  null && quest.statut == QuestSO.Statut.none)
+            {
+                StartDialogue(quest.sentences);
+            } 
+            else if (quest != null && quest.statut == QuestSO.Statut.accepter && quest.actualAmount < quest.amountToFind)
+            {
+                StartDialogue(quest.InProgressSentence);
+            }
+            else if (quest != null && quest.statut == QuestSO.Statut.accepter && quest.actualAmount == quest.amountToFind)
+            {
+                StartDialogue(quest.completeSentence);
+                quest.statut = QuestSO.Statut.complete;
+            }
+            else if (quest != null && quest.statut == QuestSO.Statut.complete)
+            {
+                StartDialogue(quest.afterQuestSentence);
+            }
+            else if (quest != null)
+            {
+                StartDialogue(sentences);
+            }
+           
+
         }
     }
 
-    public void StartDialogue()
+    public void StartDialogue(string[] sentence)
     {
         manager.dialogueHolder.SetActive(true);
         PlayerController.instance.canMove = false;
         PlayerController.instance.canAttack = false;
         isOnDial = true;
-        TypingText(sentences);
+        TypingText(sentence);
+        manager.continueButton.GetComponent<Button>().onClick.RemoveAllListeners();
+        manager.continueButton.GetComponent<Button>().onClick.AddListener(delegate { NextLine(sentence); });
     }
 
-    void TypingText(string[] sentences)
+    void TypingText(string[] sentence)
     {
         manager.nameDisplay.text = "";
         manager.textDisplay.text = "";
 
         manager.nameDisplay.text = characterName;
-        manager.textDisplay.text = sentences[index];
+        manager.textDisplay.text = sentence[index];
 
-        if (manager.textDisplay.text == sentences[index])
+        if (manager.textDisplay.text == sentence[index])
         {
             manager.continueButton.SetActive(true);
         }
     }
 
-    public void NextLine()
+    public void NextLine(string[] sentence)
     {
         manager.continueButton.SetActive(false);
 
-        if (isOnDial && index < sentences.Length - 1)
+        if (isOnDial && index < sentence.Length - 1)
         {
             index++;
             manager.textDisplay.text = "";
-            TypingText(sentences);
+            TypingText(sentence);
         }
-        else if (isOnDial && index == sentences.Length - 1)
+        else if (isOnDial && index == sentence.Length - 1)
         {
             isOnDial = false;
             index = 0;
